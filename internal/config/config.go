@@ -7,6 +7,7 @@ import (
 type Config struct {
 	Postgres PostgresConfig `mapstructure:"postgres"`
 	Redis    RedisConfig    `mapstructure:"redis"`
+	Api      ApiConfig      `mapstructure:"api"`
 }
 
 type PostgresConfig struct {
@@ -22,6 +23,11 @@ type RedisConfig struct {
 	Port     int    `mapstructure:"port"`
 	Password string `mapstructure:"password"`
 	DB       int    `mapstructure:"db"`
+}
+
+type ApiConfig struct {
+	Host string `mapstructure:"host"`
+	Port int    `mapstructure:"port"`
 }
 
 func LoadConfig(configPath string) (*Config, error) {

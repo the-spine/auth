@@ -1,39 +1,61 @@
 package server
 
 import (
+	"auth/internal/models"
+	"auth/internal/repository"
 	"context"
 
 	authpb "github.com/the-spine/spine-protos-go/auth"
 )
 
-type server struct{}
+type authServer struct {
+	authpb.UnimplementedAuthServiceServer
+}
 
-func (s *server) Login(context.Context, *authpb.LoginRequest) (*authpb.LoginResponse, error) {
+func GetAuthServer() *authServer {
+	return &authServer{}
+}
+
+func (s *authServer) Login(ctx context.Context, req *authpb.LoginRequest) (*authpb.LoginResponse, error) {
 
 	return &authpb.LoginResponse{}, nil
 }
 
-func (s *server) Logout(context.Context, *authpb.LogoutRequest) (*authpb.LogoutResponse, error) {
+func (s *authServer) Logout(ctx context.Context, req *authpb.LogoutRequest) (*authpb.LogoutResponse, error) {
 
 	return &authpb.LogoutResponse{}, nil
 }
 
-func (s *server) RefreshToken(context.Context, *authpb.RefreshTokenRequest) (*authpb.RefreshTokenResponse, error) {
+func (s *authServer) RefreshToken(ctx context.Context, req *authpb.RefreshTokenRequest) (*authpb.RefreshTokenResponse, error) {
 
 	return &authpb.RefreshTokenResponse{}, nil
 }
 
-func (s *server) GetUser(context.Context, *authpb.UserRequest) (*authpb.UserResponse, error) {
+func (s *authServer) GetUser(ctx context.Context, req *authpb.UserRequest) (*authpb.UserResponse, error) {
 
 	return &authpb.UserResponse{}, nil
 }
 
-func (s *server) RegisterUser(context.Context, *authpb.UserRegisterRequest) (*authpb.UserRegisterResponse, error) {
+func (s *authServer) RegisterUser(ctx context.Context, req *authpb.UserRegisterRequest) (*authpb.UserRegisterResponse, error) {
 
-	return &authpb.UserRegisterResponse{}, nil
+	user := models.User{
+		FirstName:    req.GetFirstName(),
+		MiddleName:   req.GetMiddleName(),
+		LastName:     req.GetLastName(),
+		Email:        req.GetEmail(),
+		PasswordHash: req.GetPassword(),
+	}
+
+	err := repository.CreateUser(&user)
+
+	if err != nil {
+		return &authpb.UserRegisterResponse{Success: false}, err
+	}
+
+	return &authpb.UserRegisterResponse{Success: true}, nil
 }
 
-func (s *server) ResetPassword(context.Context, *authpb.PasswordResetRequest) (*authpb.PasswordResetResponse, error) {
+func (s *authServer) ResetPassword(ctx context.Context, req *authpb.PasswordResetRequest) (*authpb.PasswordResetResponse, error) {
 
 	return &authpb.PasswordResetResponse{}, nil
 }
