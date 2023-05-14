@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	TenantID     uuid.UUID `gorm:"type:uuid;not null"`
-	ID           uuid.UUID `gorm:"type:uuid;primaryKey"`
+	ID           uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	FirstName    string    `gorm:"size:50;not null"`
 	MiddleName   string    `gorm:"size:50"`
 	LastName     string    `gorm:"size:50;not null"`

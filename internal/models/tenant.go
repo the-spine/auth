@@ -7,7 +7,7 @@ import (
 )
 
 type Tenant struct {
-	ID          uuid.UUID `gorm:"type:uuid;primaryKey"`
+	ID          uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	Name        string    `gorm:"size:50;uniqueIndex;not null"`
 	Description string    `gorm:"size:255"`
 	CreatedAt   time.Time `gorm:"not null"`

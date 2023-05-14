@@ -20,6 +20,8 @@ func ConnectDB(config *config.Config) error {
 		return err
 	}
 
+	DB.Raw("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";")
+
 	DB.AutoMigrate(&models.User{}, &models.Role{}, &models.Tenant{})
 
 	return err
