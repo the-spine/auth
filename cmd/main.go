@@ -20,12 +20,14 @@ func init() {
 	// connect to Database
 	err = db.ConnectDB(konfig)
 	if err != nil {
+		log.Println(err)
 		panic(err)
 	}
 
 	// connect to redis
 	err = db.ConnectRedis(konfig)
 	if err != nil {
+		log.Println(err)
 		panic(err)
 	}
 }
