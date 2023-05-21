@@ -3,10 +3,11 @@ module auth
 go 1.19
 
 require (
+	github.com/golang-jwt/jwt/v5 v5.0.0
 	github.com/google/uuid v1.3.0
 	github.com/redis/go-redis/v9 v9.0.4
 	github.com/spf13/viper v1.15.0
-	github.com/the-spine/spine-protos-go v0.0.0-20230511151624-d59f5ed6f69d
+	github.com/the-spine/spine-protos-go v0.0.0-20230521083306-1a92473e44e2
 	google.golang.org/grpc v1.55.0
 	gorm.io/driver/postgres v1.5.0
 	gorm.io/gorm v1.25.1

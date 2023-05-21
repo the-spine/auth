@@ -20,7 +20,7 @@ func StartGrpcServer(config *config.Config) (*grpc.Server, error) {
 
 	grpcServer := grpc.NewServer(opts...)
 
-	authpb.RegisterAuthServiceServer(grpcServer, server.GetAuthServer())
+	authpb.RegisterAuthServiceServer(grpcServer, server.GetAuthServer(*config))
 
 	grpcServer.Serve(lis)
 

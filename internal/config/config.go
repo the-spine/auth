@@ -8,6 +8,7 @@ type Config struct {
 	Postgres PostgresConfig `mapstructure:"postgres"`
 	Redis    RedisConfig    `mapstructure:"redis"`
 	Api      ApiConfig      `mapstructure:"api"`
+	JWT      JwtConfig      `mapstructure:"api"`
 }
 
 type PostgresConfig struct {
@@ -28,6 +29,11 @@ type RedisConfig struct {
 type ApiConfig struct {
 	Host string `mapstructure:"host"`
 	Port int    `mapstructure:"port"`
+}
+
+type JwtConfig struct {
+	EcdsaPrivateKey string `mapstructure:"ecdsa_private_key"`
+	EcdsaPublicKey  string `mapstructure:"ecdsa_public_key"`
 }
 
 func LoadConfig(configPath string) (*Config, error) {
