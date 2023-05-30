@@ -8,7 +8,7 @@ type Config struct {
 	Postgres PostgresConfig `mapstructure:"postgres"`
 	Redis    RedisConfig    `mapstructure:"redis"`
 	Api      ApiConfig      `mapstructure:"api"`
-	JWT      JwtConfig      `mapstructure:"api"`
+	JWT      JwtConfig      `mapstructure:"jwt"`
 }
 
 type PostgresConfig struct {
