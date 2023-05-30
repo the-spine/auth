@@ -11,11 +11,11 @@ func CreateUser(user *models.User) error {
 }
 
 func GetUserByEmail(email string, user *models.User) error {
-	result := db.DB.Where("email = ?").First(user)
+	result := db.DB.Where("email = ?", email).First(user)
 	return result.Error
 }
 
 func GetUserById(id string, user *models.User) error {
-	result := db.DB.Where("id = ?").First(id)
+	result := db.DB.Where("id = ?", id).First(id)
 	return result.Error
 }
