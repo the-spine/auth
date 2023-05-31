@@ -5,6 +5,8 @@ import (
 	"auth/internal/models"
 	"auth/internal/repository"
 	"context"
+	"crypto/x509"
+	"encoding/pem"
 	"fmt"
 	"time"
 
@@ -46,7 +48,15 @@ func (s *authServer) Login(ctx context.Context, req *authpb.LoginRequest) (*auth
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodES256, refreshClaims)
 
-	signedRefreshToken, err := refreshToken.SignedString(s.config.JWT.EcdsaPrivateKey)
+	block, _ := pem.Decode([]byte(s.config.JWT.EcdsaPrivateKey))
+
+	key, err := x509.ParseECPrivateKey(block.Bytes)
+
+	if err != nil {
+		return nil, err
+	}
+
+	signedRefreshToken, err := refreshToken.SignedString(key)
 
 	if err != nil {
 		return nil, err
@@ -64,7 +74,7 @@ func (s *authServer) Login(ctx context.Context, req *authpb.LoginRequest) (*auth
 
 	acessToken := jwt.NewWithClaims(jwt.SigningMethodES256, acessTokenClaims)
 
-	signedAcessToken, err := acessToken.SignedString(s.config.JWT.EcdsaPrivateKey)
+	signedAcessToken, err := acessToken.SignedString(key)
 
 	if err != nil {
 		return nil, err
