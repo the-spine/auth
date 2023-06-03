@@ -7,7 +7,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/redis/go-redis/v9 v9.0.4
 	github.com/spf13/viper v1.15.0
-	github.com/the-spine/spine-protos-go v0.0.0-20230521083306-1a92473e44e2
+	github.com/the-spine/spine-protos-go v0.0.0-20230603094348-5d4cd465c373
 	google.golang.org/grpc v1.55.0
 	gorm.io/driver/postgres v1.5.0
 	gorm.io/gorm v1.25.1

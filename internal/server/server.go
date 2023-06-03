@@ -62,29 +62,10 @@ func (s *authServer) Login(ctx context.Context, req *authpb.LoginRequest) (*auth
 		return nil, err
 	}
 
-	acessTokenClaims := jwt.MapClaims{
-		"iss":   "Auth Service",
-		"aud":   user.TenantID,
-		"sub":   user.ID,
-		"nbf":   time.Now().UnixMicro(),
-		"exp":   time.Now().Add(time.Minute * 30).UnixMicro(),
-		"jti":   "",
-		"roles": user.Roles,
-	}
-
-	acessToken := jwt.NewWithClaims(jwt.SigningMethodES256, acessTokenClaims)
-
-	signedAcessToken, err := acessToken.SignedString(key)
-
-	if err != nil {
-		return nil, err
-	}
-
 	return &authpb.LoginResponse{
 		RefreshToken: signedRefreshToken,
-		TokenType:    "OAuth 2.0",
+		TokenType:    "Refresh Token",
 		ExpiresIn:    exp,
-		AccessToken:  signedAcessToken,
 	}, nil
 }
 
