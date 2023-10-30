@@ -3,11 +3,16 @@ package main
 import (
 	"auth/internal/config"
 	"auth/internal/db"
+	"auth/internal/events"
 	"auth/internal/service"
 	"log"
+	"sync"
 )
 
-var konfig *config.Config
+var (
+	konfig *config.Config
+	wg     sync.WaitGroup
+)
 
 func init() {
 	var err error
@@ -34,14 +39,38 @@ func init() {
 
 func main() {
 
-	log.Println("Starting Grpc Server")
+	wg.Add(1)
 
-	_, err := service.StartGrpcServer(konfig)
+	go func() {
+		log.Println("Starting Grpc Server")
 
-	if err != nil {
-		log.Println(err)
-	}
+		defer wg.Done()
 
-	log.Println("Grpc Server Running")
+		_, err := service.StartGrpcServer(konfig)
 
+		if err != nil {
+			log.Println(err)
+		}
+
+		log.Println("Grpc Server Running")
+
+	}()
+
+	wg.Add(1)
+
+	go func(config config.Config) {
+		log.Println("Starting Events Server")
+
+		defer wg.Done()
+		err := events.CreateTopicIfNotExists(&config)
+
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		events.ConsumeUserCreationTopic(&config)
+
+	}(*konfig)
+
+	wg.Wait()
 }
