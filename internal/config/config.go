@@ -38,6 +38,10 @@ type JwtConfig struct {
 }
 
 type KafkaConfig struct {
+	Brokers []KafkaBrokers `mapstructure:"brokers"`
+}
+
+type KafkaBrokers struct {
 	Host string `mapstructure:"host"`
 	Port int    `mapstructure:"port"`
 }

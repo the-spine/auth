@@ -20,7 +20,12 @@ const (
 
 func CreateTopicIfNotExists(config *config.Config) error {
 	network := "tcp"
-	address := fmt.Sprintf("%s:%d", config.Kafka.Host, config.Kafka.Port)
+
+	if len(config.Kafka.Brokers) < 1 {
+		return fmt.Errorf("No Brokers Provided")
+	}
+
+	address := fmt.Sprintf("%s:%d", config.Kafka.Brokers[0].Host, config.Kafka.Brokers[0].Port)
 
 	conn, err := kafka.Dial(network, address)
 	if err != nil {
@@ -70,7 +75,13 @@ func CreateTopicIfNotExists(config *config.Config) error {
 
 func ConsumeUserCreationTopic(config *config.Config) {
 
-	address := fmt.Sprintf("%s:%d", config.Kafka.Host, config.Kafka.Port)
+	if len(config.Kafka.Brokers) < 1 {
+		// TODO: handle this properly
+		log.Println("No Brokers Provided")
+		return
+	}
+
+	address := fmt.Sprintf("%s:%d", config.Kafka.Brokers[0].Host, config.Kafka.Brokers[0].Port)
 
 	r := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: []string{address},
